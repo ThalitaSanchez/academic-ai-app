@@ -17,7 +17,6 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  // Relations
   courses       Enrollment[]
   conversations Conversation[]
   progress      UserProgress[]
@@ -33,7 +32,6 @@ model Course {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  // Relations
   lessons     Lesson[]
   enrollments Enrollment[]
 }
@@ -55,7 +53,6 @@ model Enrollment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
@@ -72,7 +69,6 @@ model Lesson {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  // Relations
   course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   submissions Submission[]
 }
@@ -86,7 +82,6 @@ model UserProgress {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
@@ -97,9 +92,8 @@ model Conversation {
   userId    String
   topic     String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
 
-  // Relations
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages  Message[]
 }
@@ -107,11 +101,10 @@ model Conversation {
 model Message {
   id             String   @id @default(cuid())
   conversationId String
-  role           String   // "user" ou "assistant"
+  role           String
   content        String
   createdAt      DateTime @default(now())
 
-  // Relations
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
 
@@ -135,7 +128,6 @@ model Submission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 

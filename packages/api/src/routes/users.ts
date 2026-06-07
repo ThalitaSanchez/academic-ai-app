@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client'
 const router = Router()
 const prisma = new PrismaClient()
 
-// GET /api/users/me
 router.get('/me', async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId
@@ -36,7 +35,6 @@ router.get('/me', async (req: Request, res: Response) => {
   }
 })
 
-// GET /api/users/:id/progress
 router.get('/:id/progress', async (req: Request, res: Response) => {
   try {
     const { id } = req.params
@@ -52,7 +50,6 @@ router.get('/:id/progress', async (req: Request, res: Response) => {
   }
 })
 
-// PUT /api/users/:id
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params

@@ -23,7 +23,6 @@ interface ChatRequest extends Request {
   }
 }
 
-// POST /api/chat
 router.post('/', async (req: ChatRequest, res: Response) => {
   try {
     const { message, category = 'MEDICINA', conversationHistory = [] } = req.body
@@ -60,7 +59,6 @@ router.post('/', async (req: ChatRequest, res: Response) => {
   }
 })
 
-// POST /api/chat/image-analysis
 router.post('/image-analysis', async (req: Request, res: Response) => {
   try {
     const { imageUrl, category = 'RADIOLOGIA' } = req.body

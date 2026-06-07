@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 
 async function main() {
   try {
-    // Limpar dados existentes
     await prisma.submission.deleteMany()
     await prisma.message.deleteMany()
     await prisma.conversation.deleteMany()
@@ -16,7 +15,6 @@ async function main() {
 
     console.log('✅ Dados limpos')
 
-    // Criar usuários de exemplo
     const user1 = await prisma.user.create({
       data: {
         email: 'estudante@example.com',
@@ -35,7 +33,6 @@ async function main() {
 
     console.log('✅ Usuários criados')
 
-    // Criar cursos
     const cursoBiomedicina = await prisma.course.create({
       data: {
         title: 'Introdução à Biomedicina',
@@ -62,30 +59,6 @@ async function main() {
 
     console.log('✅ Cursos criados')
 
-    // Criar aulas
-    await prisma.lesson.create({
-      data: {
-        courseId: cursoBiomedicina.id,
-        title: 'Células e Tecidos',
-        description: 'Estrutura e função das células',
-        content: 'As células são as unidades básicas da vida...',
-        order: 1,
-      },
-    })
-
-    await prisma.lesson.create({
-      data: {
-        courseId: cursoBiomedicina.id,
-        title: 'Genética Molecular',
-        description: 'DNA, RNA e síntese de proteínas',
-        content: 'A genética molecular estuda a estrutura...',
-        order: 2,
-      },
-    })
-
-    console.log('✅ Aulas criadas')
-
-    // Criar inscrições
     await prisma.enrollment.create({
       data: {
         userId: user1.id,
@@ -101,44 +74,6 @@ async function main() {
     })
 
     console.log('✅ Inscrições criadas')
-
-    // Criar progresso
-    await prisma.userProgress.create({
-      data: {
-        userId: user1.id,
-        courseId: cursoBiomedicina.id,
-        lessonsCompleted: 1,
-        score: 85,
-      },
-    })
-
-    console.log('✅ Progresso criado')
-
-    // Criar conversa de exemplo
-    const conversation = await prisma.conversation.create({
-      data: {
-        userId: user1.id,
-        topic: 'Dúvidas sobre Biomedicina',
-      },
-    })
-
-    await prisma.message.create({
-      data: {
-        conversationId: conversation.id,
-        role: 'user',
-        content: 'O que é uma célula?',
-      },
-    })
-
-    await prisma.message.create({
-      data: {
-        conversationId: conversation.id,
-        role: 'assistant',
-        content: 'Uma célula é a unidade básica da vida, contendo citoplasma e núcleo...',
-      },
-    })
-
-    console.log('✅ Conversa criada')
     console.log('🎉 Seed completado com sucesso!')
   } catch (error) {
     console.error('❌ Erro no seed:', error)

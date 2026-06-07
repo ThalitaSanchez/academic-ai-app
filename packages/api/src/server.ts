@@ -38,7 +38,6 @@ app.get('/api', (req: Request, res: Response) => {
       'GET /api',
       'POST /api/auth/signup',
       'POST /api/auth/login',
-      'POST /api/auth/logout',
       'GET /api/courses',
       'GET /api/users/me',
       'POST /api/chat',

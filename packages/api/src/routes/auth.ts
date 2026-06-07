@@ -24,26 +24,21 @@ interface LoginRequest extends Request {
   }
 }
 
-// POST /api/auth/signup
 router.post('/signup', async (req: SignupRequest, res: Response) => {
   try {
     const { email, password, name } = req.body
 
-    // Validação
     if (!email || !password || !name) {
       return res.status(400).json({ error: 'Email, password e name são obrigatórios' })
     }
 
-    // Verificar se usuário já existe
     const existingUser = await prisma.user.findUnique({ where: { email } })
     if (existingUser) {
       return res.status(400).json({ error: 'Usuário já existe' })
     }
 
-    // Hash da senha
     const hashedPassword = await bcryptjs.hash(password, 10)
 
-    // Criar usuário
     const user = await prisma.user.create({
       data: {
         email,
@@ -52,7 +47,6 @@ router.post('/signup', async (req: SignupRequest, res: Response) => {
       },
     })
 
-    // Gerar token
     const token = jwt.sign(
       { id: user.id, email: user.email },
       JWT_SECRET,
@@ -74,7 +68,6 @@ router.post('/signup', async (req: SignupRequest, res: Response) => {
   }
 })
 
-// POST /api/auth/login
 router.post('/login', async (req: LoginRequest, res: Response) => {
   try {
     const { email, password } = req.body
@@ -83,19 +76,16 @@ router.post('/login', async (req: LoginRequest, res: Response) => {
       return res.status(400).json({ error: 'Email e password são obrigatórios' })
     }
 
-    // Encontrar usuário
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) {
       return res.status(401).json({ error: 'Email ou senha incorretos' })
     }
 
-    // Verificar senha
     const passwordMatch = await bcryptjs.compare(password, user.password || '')
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Email ou senha incorretos' })
     }
 
-    // Gerar token
     const token = jwt.sign(
       { id: user.id, email: user.email },
       JWT_SECRET,
@@ -117,9 +107,7 @@ router.post('/login', async (req: LoginRequest, res: Response) => {
   }
 })
 
-// POST /api/auth/logout
 router.post('/logout', (req: Request, res: Response) => {
-  // Logout é geralmente tratado no frontend (removendo token)
   res.json({ message: 'Logout realizado com sucesso' })
 })
 
