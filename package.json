@@ -1,0 +1,18 @@
+{
+  "name": "academic-ai-app",
+  "version": "0.1.0",
+  "description": "Plataforma acadêmica com IA integrada para Biomedicina, Medicina, Radiologia, Enfermagem, Química e Farmácia",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development workspace setup required'",
+    "build": "echo 'Build workspace setup required'",
+    "test": "echo 'Testing workspace setup required'",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

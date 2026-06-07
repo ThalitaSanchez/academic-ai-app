@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: academic-ai-postgres
+    environment:
+      POSTGRES_USER: academic_user
+      POSTGRES_PASSWORD: academic_password
+      POSTGRES_DB: academic_ai_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U academic_user -d academic_ai_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - academic-ai-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: academic-ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - academic-ai-network
+    command: redis-server --appendonly yes
+
+  # pgAdmin (Database Management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: academic-ai-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - academic-ai-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  academic-ai-network:
+    driver: bridge
